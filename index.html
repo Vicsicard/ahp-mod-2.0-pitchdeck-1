@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AHP Pitch Deck</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            gap: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            max-width: 1200px;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .slide-indicator {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ccc;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: #667eea;
+            transform: scale(1.2);
+        }
+
+        .slide-counter {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 0 1rem;
+        }
+
+        .video-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-controls {
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .control-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            margin: 0 10px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .control-btn:active {
+            transform: translateY(0);
+        }
+
+        .info-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .info-section h2 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+            font-weight: 300;
+        }
+
+        .info-section p {
+            color: #555;
+            line-height: 1.6;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .feature-card p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .footer {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .video-container,
+            .info-section {
+                padding: 1.5rem;
+            }
+            
+            .control-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+                margin: 5px;
+            }
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #666;
+            font-style: italic;
+        }
+
+        .error-message {
+            display: none;
+            background: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>AHP Pitch Deck</h1>
+    </header>
+
+    <main class="main-container">
+        <!-- Slide 1: Video Introduction -->
+        <div class="slide active" id="slide1">
+            <section class="video-container">
+                <h2 style="text-align: center; color: #2c3e50; margin-bottom: 1.5rem; font-size: 2.2rem;">Welcome to AHP</h2>
+                <div class="video-wrapper">
+                    <iframe 
+                        id="pitchVideo"
+                        src="https://www.youtube.com/embed/5gun_0IRROs?enablejsapi=1&rel=0&modestbranding=1&playsinline=1" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 15px;">
+                    </iframe>
+                </div>
+                
+                <div class="loading" id="loadingMessage">
+                    Loading video...
+                </div>
+                
+                <div class="error-message" id="errorMessage">
+                    Unable to load video. Please check if the video file exists in the correct location.
+                </div>
+                
+                <div class="video-controls">
+                    <button class="control-btn" onclick="openYouTube()">Watch on YouTube</button>
+                    <button class="control-btn" onclick="shareVideo()">Share Video</button>
+                    <button class="control-btn" onclick="toggleFullscreen()">Fullscreen</button>
+                </div>
+            </section>
+        </div>
+
+        <!-- Slide 2: About & Features -->
+        <div class="slide" id="slide2">
+            <section class="info-section">
+                <h2>About This Presentation</h2>
+                <p>Welcome to the AHP pitch deck presentation. This video showcases our innovative approach and key value propositions.</p>
+                
+                <div class="features">
+                    <div class="feature-card">
+                        <h3>🎯 Strategic Vision</h3>
+                        <p>Our comprehensive approach to market opportunities and strategic positioning.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>💡 Innovation</h3>
+                        <p>Cutting-edge solutions that address real market needs and challenges.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>📈 Growth Potential</h3>
+                        <p>Scalable business model with significant market expansion opportunities.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🤝 Partnership</h3>
+                        <p>Building strong relationships and collaborative partnerships for success.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Slide 3: Market Opportunity -->
+        <div class="slide" id="slide3">
+            <section class="info-section">
+                <h2>Market Opportunity</h2>
+                <p>The market presents significant opportunities for growth and expansion in our target sectors.</p>
+                
+                <div class="features">
+                    <div class="feature-card">
+                        <h3>📊 Market Size</h3>
+                        <p>Addressable market with substantial growth potential and expanding customer base.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🎯 Target Audience</h3>
+                        <p>Well-defined customer segments with clear pain points and needs.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🚀 Growth Trajectory</h3>
+                        <p>Projected growth rates and market expansion opportunities.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>💰 Revenue Potential</h3>
+                        <p>Multiple revenue streams and monetization strategies.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Slide 4: Business Model -->
+        <div class="slide" id="slide4">
+            <section class="info-section">
+                <h2>Business Model</h2>
+                <p>Our sustainable and scalable business model designed for long-term success and profitability.</p>
+                
+                <div class="features">
+                    <div class="feature-card">
+                        <h3>💼 Revenue Streams</h3>
+                        <p>Diversified revenue sources ensuring financial stability and growth.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>⚡ Scalability</h3>
+                        <p>Efficient operations that scale with minimal additional overhead.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🔄 Recurring Revenue</h3>
+                        <p>Subscription and recurring revenue models for predictable income.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>📈 Profit Margins</h3>
+                        <p>Strong unit economics with healthy profit margins.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Slide 5: Contact & Next Steps -->
+        <div class="slide" id="slide5">
+            <section class="info-section">
+                <h2>Let's Connect</h2>
+                <p>Ready to take the next step? We'd love to discuss how we can work together to achieve mutual success.</p>
+                
+                <div class="features">
+                    <div class="feature-card">
+                        <h3>📧 Get in Touch</h3>
+                        <p>Contact us to schedule a detailed discussion about partnership opportunities.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>📅 Schedule a Meeting</h3>
+                        <p>Book a consultation to explore how we can collaborate effectively.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>📋 Request Proposal</h3>
+                        <p>Get a customized proposal tailored to your specific needs and requirements.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🤝 Partnership</h3>
+                        <p>Explore strategic partnership opportunities for mutual growth.</p>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="control-btn" onclick="restartPresentation()" style="font-size: 1.1rem; padding: 15px 30px;">🔄 Restart Presentation</button>
+                </div>
+            </section>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+            <div class="slide-indicator">
+                <div class="dot active" onclick="currentSlide(1)"></div>
+                <div class="dot" onclick="currentSlide(2)"></div>
+                <div class="dot" onclick="currentSlide(3)"></div>
+                <div class="dot" onclick="currentSlide(4)"></div>
+                <div class="dot" onclick="currentSlide(5)"></div>
+            </div>
+            <span class="slide-counter" id="slideCounter">1 / 5</span>
+            <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next →</button>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 AHP. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const iframe = document.getElementById('pitchVideo');
+        const loadingMessage = document.getElementById('loadingMessage');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Hide loading message since YouTube handles loading
+        loadingMessage.style.display = 'none';
+        errorMessage.style.display = 'none';
+
+        // YouTube video information
+        const videoId = '5gun_0IRROs';
+        const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+        const shareUrl = `https://youtube.com/shorts/${videoId}`;
+
+        // Control functions for YouTube
+        function openYouTube() {
+            window.open(videoUrl, '_blank');
+        }
+
+        function shareVideo() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'AHP Pitch Deck',
+                    text: 'Check out this AHP presentation!',
+                    url: shareUrl
+                }).catch(err => {
+                    console.log('Error sharing:', err);
+                    copyToClipboard();
+                });
+            } else {
+                copyToClipboard();
+            }
+        }
+
+        function copyToClipboard() {
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                alert('Video link copied to clipboard!');
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = shareUrl;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('Video link copied to clipboard!');
+            });
+        }
+
+        function toggleFullscreen() {
+            if (iframe.requestFullscreen) {
+                iframe.requestFullscreen();
+            } else if (iframe.webkitRequestFullscreen) {
+                iframe.webkitRequestFullscreen();
+            } else if (iframe.msRequestFullscreen) {
+                iframe.msRequestFullscreen();
+            }
+        }
+
+        // Slide navigation variables
+        let currentSlideIndex = 1;
+        const totalSlides = 5;
+
+        // Slide navigation functions
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.dot');
+            
+            if (n > totalSlides) currentSlideIndex = 1;
+            if (n < 1) currentSlideIndex = totalSlides;
+            
+            // Hide all slides
+            slides.forEach(slide => slide.classList.remove('active'));
+            
+            // Remove active class from all dots
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            // Show current slide
+            document.getElementById(`slide${currentSlideIndex}`).classList.add('active');
+            
+            // Activate current dot
+            dots[currentSlideIndex - 1].classList.add('active');
+            
+            // Update counter
+            document.getElementById('slideCounter').textContent = `${currentSlideIndex} / ${totalSlides}`;
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentSlideIndex === 1;
+            document.getElementById('nextBtn').disabled = currentSlideIndex === totalSlides;
+        }
+
+        function changeSlide(n) {
+            currentSlideIndex += n;
+            showSlide(currentSlideIndex);
+        }
+
+        function currentSlide(n) {
+            currentSlideIndex = n;
+            showSlide(currentSlideIndex);
+        }
+
+        function restartPresentation() {
+            currentSlideIndex = 1;
+            showSlide(currentSlideIndex);
+        }
+
+        // Initialize slide navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            showSlide(currentSlideIndex);
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.target.tagName.toLowerCase() !== 'input') {
+                switch(e.code) {
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        changeSlide(-1);
+                        break;
+                    case 'ArrowRight':
+                    case 'Space':
+                        e.preventDefault();
+                        changeSlide(1);
+                        break;
+                    case 'Home':
+                        e.preventDefault();
+                        currentSlide(1);
+                        break;
+                    case 'End':
+                        e.preventDefault();
+                        currentSlide(totalSlides);
+                        break;
+                    case 'KeyR':
+                        e.preventDefault();
+                        restartPresentation();
+                        break;
+                    case 'KeyF':
+                        toggleFullscreen();
+                        break;
+                }
+            }
+        });
+
+        // Progress tracking
+        video.addEventListener('timeupdate', function() {
+            const progress = (video.currentTime / video.duration) * 100;
+            // You can add a progress bar here if needed
+        });
+
+        // Auto-hide controls after inactivity
+        let controlsTimeout;
+        const videoContainer = document.querySelector('.video-container');
+        
+        videoContainer.addEventListener('mousemove', function() {
+            clearTimeout(controlsTimeout);
+            document.querySelector('.video-controls').style.opacity = '1';
+            
+            controlsTimeout = setTimeout(function() {
+                if (!video.paused) {
+                    document.querySelector('.video-controls').style.opacity = '0.3';
+                }
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

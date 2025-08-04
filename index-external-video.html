@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AHP Pitch Deck</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            gap: 2rem;
+        }
+
+        .video-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-controls {
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .control-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            margin: 0 10px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .control-btn:active {
+            transform: translateY(0);
+        }
+
+        .info-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .info-section h2 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+            font-weight: 300;
+        }
+
+        .info-section p {
+            color: #555;
+            line-height: 1.6;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .feature-card p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .footer {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .video-container,
+            .info-section {
+                padding: 1.5rem;
+            }
+            
+            .control-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+                margin: 5px;
+            }
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #666;
+            font-style: italic;
+        }
+
+        .error-message {
+            display: none;
+            background: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            border: 1px solid #f5c6cb;
+        }
+
+        .video-source-selector {
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .video-source-selector select {
+            padding: 8px 15px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            background: white;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>AHP Pitch Deck</h1>
+    </header>
+
+    <main class="main-container">
+        <section class="video-container">
+            <div class="video-source-selector">
+                <label for="videoSource">Video Source: </label>
+                <select id="videoSource" onchange="changeVideoSource()">
+                    <option value="local">Local Video</option>
+                    <option value="youtube">YouTube (Example)</option>
+                    <option value="vimeo">Vimeo (Example)</option>
+                    <option value="custom">Custom URL</option>
+                </select>
+            </div>
+            
+            <div class="video-wrapper" id="videoWrapper">
+                <video id="pitchVideo" controls preload="metadata" poster="">
+                    <source src="video/AHP MOD 2.0 v4.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            
+            <div class="loading" id="loadingMessage">
+                Loading video...
+            </div>
+            
+            <div class="error-message" id="errorMessage">
+                Unable to load video. Please check if the video file exists in the correct location.
+            </div>
+            
+            <div class="video-controls">
+                <button class="control-btn" onclick="playPause()">Play/Pause</button>
+                <button class="control-btn" onclick="restart()">Restart</button>
+                <button class="control-btn" onclick="toggleFullscreen()">Fullscreen</button>
+                <button class="control-btn" onclick="toggleMute()">Mute/Unmute</button>
+            </div>
+        </section>
+
+        <section class="info-section">
+            <h2>About This Presentation</h2>
+            <p>Welcome to the AHP pitch deck presentation. This video showcases our innovative approach and key value propositions.</p>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <h3>🎯 Strategic Vision</h3>
+                    <p>Our comprehensive approach to market opportunities and strategic positioning.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>💡 Innovation</h3>
+                    <p>Cutting-edge solutions that address real market needs and challenges.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📈 Growth Potential</h3>
+                    <p>Scalable business model with significant market expansion opportunities.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🤝 Partnership</h3>
+                    <p>Building strong relationships and collaborative partnerships for success.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 AHP. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const video = document.getElementById('pitchVideo');
+        const videoWrapper = document.getElementById('videoWrapper');
+        const loadingMessage = document.getElementById('loadingMessage');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Configuration for different video sources
+        const videoSources = {
+            local: {
+                type: 'video',
+                src: 'video/AHP MOD 2.0 v4.mp4'
+            },
+            youtube: {
+                type: 'iframe',
+                src: 'https://www.youtube.com/embed/YOUR_VIDEO_ID'
+            },
+            vimeo: {
+                type: 'iframe', 
+                src: 'https://player.vimeo.com/video/YOUR_VIDEO_ID'
+            },
+            custom: {
+                type: 'video',
+                src: 'https://your-cdn.com/path/to/video.mp4'
+            }
+        };
+
+        // Show loading message initially
+        loadingMessage.style.display = 'block';
+
+        // Video event listeners
+        video.addEventListener('loadstart', function() {
+            loadingMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+        });
+
+        video.addEventListener('canplay', function() {
+            loadingMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+        });
+
+        video.addEventListener('error', function() {
+            loadingMessage.style.display = 'none';
+            errorMessage.style.display = 'block';
+            console.error('Video loading error:', video.error);
+        });
+
+        // Change video source function
+        function changeVideoSource() {
+            const sourceSelect = document.getElementById('videoSource');
+            const selectedSource = videoSources[sourceSelect.value];
+            
+            if (selectedSource.type === 'iframe') {
+                // Replace video with iframe for YouTube/Vimeo
+                videoWrapper.innerHTML = `
+                    <iframe 
+                        src="${selectedSource.src}" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                    </iframe>
+                `;
+                document.querySelector('.video-controls').style.display = 'none';
+            } else {
+                // Use regular video element
+                videoWrapper.innerHTML = `
+                    <video id="pitchVideo" controls preload="metadata" poster="">
+                        <source src="${selectedSource.src}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                `;
+                document.querySelector('.video-controls').style.display = 'block';
+                // Re-attach event listeners
+                setupVideoListeners();
+            }
+        }
+
+        function setupVideoListeners() {
+            const newVideo = document.getElementById('pitchVideo');
+            if (newVideo) {
+                newVideo.addEventListener('loadstart', function() {
+                    loadingMessage.style.display = 'block';
+                    errorMessage.style.display = 'none';
+                });
+
+                newVideo.addEventListener('canplay', function() {
+                    loadingMessage.style.display = 'none';
+                    errorMessage.style.display = 'none';
+                });
+
+                newVideo.addEventListener('error', function() {
+                    loadingMessage.style.display = 'none';
+                    errorMessage.style.display = 'block';
+                });
+            }
+        }
+
+        // Control functions
+        function playPause() {
+            const currentVideo = document.getElementById('pitchVideo');
+            if (currentVideo && currentVideo.paused) {
+                currentVideo.play().catch(e => {
+                    console.error('Play failed:', e);
+                    errorMessage.style.display = 'block';
+                    errorMessage.textContent = 'Unable to play video: ' + e.message;
+                });
+            } else if (currentVideo) {
+                currentVideo.pause();
+            }
+        }
+
+        function restart() {
+            const currentVideo = document.getElementById('pitchVideo');
+            if (currentVideo) {
+                currentVideo.currentTime = 0;
+                currentVideo.play().catch(e => {
+                    console.error('Restart failed:', e);
+                });
+            }
+        }
+
+        function toggleFullscreen() {
+            const currentVideo = document.getElementById('pitchVideo');
+            if (currentVideo && currentVideo.requestFullscreen) {
+                currentVideo.requestFullscreen();
+            } else if (currentVideo && currentVideo.webkitRequestFullscreen) {
+                currentVideo.webkitRequestFullscreen();
+            } else if (currentVideo && currentVideo.msRequestFullscreen) {
+                currentVideo.msRequestFullscreen();
+            }
+        }
+
+        function toggleMute() {
+            const currentVideo = document.getElementById('pitchVideo');
+            if (currentVideo) {
+                currentVideo.muted = !currentVideo.muted;
+            }
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.target.tagName.toLowerCase() !== 'input') {
+                switch(e.code) {
+                    case 'Space':
+                        e.preventDefault();
+                        playPause();
+                        break;
+                    case 'KeyR':
+                        restart();
+                        break;
+                    case 'KeyF':
+                        toggleFullscreen();
+                        break;
+                    case 'KeyM':
+                        toggleMute();
+                        break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
